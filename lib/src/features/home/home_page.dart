@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:imc_calculator_flutter/src/core/repositories/bmi/hive_bmi_repository_impl.dart';
 
 import '../../core/dtos/new_bmi_dto.dart';
 import '../../core/repositories/bmi/bmi_respository.dart';
-import '../../core/repositories/bmi/shared_references_bmi_repository_impl.dart';
 import 'bmi_store.dart';
 import 'widgets/bmi_list_widget.dart';
 import 'widgets/new_bmi_record_alert_widget.dart';
@@ -25,8 +25,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    final sharedPreferences = SharedPreferences.getInstance();
-    _bmiRespository = SharedReferencesBmiRepositoryImpl(sharedPreferences);
+    final box = Hive.openBox('bmi');
+    _bmiRespository = HiveBmiRepositoryImpl(box);
     _bmiStore = BmiStore(_bmiRespository);
     _bmiStore.fetchBmiList();
   }

@@ -1,17 +1,18 @@
 name: imc_calculator_flutter
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.1.1 <4.0.0'
+  sdk: ">=3.1.1 <4.0.0"
 
 dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   intl: ^0.18.1
-  shared_preferences: ^2.2.1
 
 dev_dependencies:
   flutter_test:
