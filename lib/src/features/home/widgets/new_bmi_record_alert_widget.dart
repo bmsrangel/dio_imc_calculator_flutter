@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:imc_calculator_flutter/src/core/utils/decimal_formatter_util.dart';
 
 import '../../../core/dtos/new_bmi_dto.dart';
 import 'decimal_text_form_field.dart';
@@ -6,7 +7,10 @@ import 'decimal_text_form_field.dart';
 class NewBmiRecordAlertWidget extends StatefulWidget {
   const NewBmiRecordAlertWidget({
     super.key,
-  });
+    double? lastHeight,
+  }) : _lastHeight = lastHeight;
+
+  final double? _lastHeight;
 
   @override
   State<NewBmiRecordAlertWidget> createState() =>
@@ -18,12 +22,21 @@ class _NewBmiRecordAlertWidgetState extends State<NewBmiRecordAlertWidget> {
   late final TextEditingController _weight$;
   late final TextEditingController _height$;
 
+  double? get lastHeight => widget._lastHeight;
+
   @override
   void initState() {
     super.initState();
     _formKey = GlobalKey<FormState>();
     _weight$ = TextEditingController();
-    _height$ = TextEditingController();
+    _height$ = TextEditingController(
+      text: lastHeight != null
+          ? DecimalFormatterUtil.format(
+              lastHeight!,
+              decimalDigits: 2,
+            )
+          : null,
+    );
   }
 
   @override

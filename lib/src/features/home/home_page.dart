@@ -1,40 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:imc_calculator_flutter/src/core/repositories/bmi/hive_bmi_repository_impl.dart';
 
 import '../../core/dtos/new_bmi_dto.dart';
-import '../../core/repositories/bmi/bmi_respository.dart';
 import 'bmi_store.dart';
 import 'widgets/bmi_list_widget.dart';
 import 'widgets/new_bmi_record_alert_widget.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required BmiStore bmiStore})
+      : _bmiStore = bmiStore;
+
+  final BmiStore _bmiStore;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  late final BmiRespository _bmiRespository;
-  late final BmiStore _bmiStore;
-
-  late final TextEditingController _weight$;
-  late final TextEditingController _height$;
+  BmiStore get _bmiStore => widget._bmiStore;
 
   @override
   void initState() {
     super.initState();
-    final box = Hive.openBox('bmi');
-    _bmiRespository = HiveBmiRepositoryImpl(box);
-    _bmiStore = BmiStore(_bmiRespository);
     _bmiStore.fetchBmiList();
   }
 
   @override
   void dispose() {
-    _weight$.dispose();
-    _height$.dispose();
     super.dispose();
   }
 
@@ -68,7 +59,9 @@ class _HomePageState extends State<HomePage> {
         onPressed: () async {
           final newBmi = await showDialog<NewBmiDto?>(
             context: context,
-            builder: (context) => const NewBmiRecordAlertWidget(),
+            builder: (context) => NewBmiRecordAlertWidget(
+              lastHeight: _bmiStore.lastHeight,
+            ),
           );
           if (newBmi != null) {
             await _bmiStore.createBmi(newBmi);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'features/home/home_page.dart';
 
@@ -9,7 +10,9 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Calculadora IMC Flutter',
-      home: const HomePage(),
+      home: HomePage(
+        bmiStore: GetIt.I.get(),
+      ),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(

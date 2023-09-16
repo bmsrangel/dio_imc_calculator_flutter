@@ -2,7 +2,7 @@ import 'dart:math';
 
 import '../enums/imc_classification_enum.dart';
 
-class BmiCalculator {
+class BmiCalculatorService {
   static double calculateBmi(double weight, double height) {
     final bmi = weight / pow(height, 2);
     return double.parse(bmi.toStringAsFixed(2));

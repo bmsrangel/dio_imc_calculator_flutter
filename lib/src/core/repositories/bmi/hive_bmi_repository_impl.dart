@@ -7,13 +7,12 @@ class HiveBmiRepositoryImpl implements BmiRespository {
     _boxKey = 'bmi_list';
   }
 
-  final Future<Box> _box;
+  final Box _box;
   late final String _boxKey;
 
   @override
   Future<List<BmiModel>> findAll() async {
-    final box = await _box;
-    final results = box.get(_boxKey, defaultValue: <Map<String, dynamic>>[]);
+    final results = _box.get(_boxKey, defaultValue: <Map<String, dynamic>>[]);
     final bmiMapList =
         (results as List).map((e) => Map<String, dynamic>.from(e)).toList();
     return bmiMapList.map(BmiModel.fromMap).toList();
@@ -23,15 +22,15 @@ class HiveBmiRepositoryImpl implements BmiRespository {
   Future<void> insertOne(BmiModel bmiModel) async {
     final bmiList = await findAll();
     bmiList.add(bmiModel);
-    final box = await _box;
-    await box.put(_boxKey, bmiList.map((bmi) => bmi.toMap()).toList());
+
+    await _box.put(_boxKey, bmiList.map((bmi) => bmi.toMap()).toList());
   }
 
   @override
   Future<void> removeOne(BmiModel bmiModel) async {
     final bmiList = await findAll();
     bmiList.remove(bmiModel);
-    final box = await _box;
-    await box.put(_boxKey, bmiList.map((bmi) => bmi.toMap()).toList());
+
+    await _box.put(_boxKey, bmiList.map((bmi) => bmi.toMap()).toList());
   }
 }
